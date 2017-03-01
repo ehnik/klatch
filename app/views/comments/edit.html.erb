@@ -1,0 +1,13 @@
+<h2>Update Comment</h2>
+
+<%= form_for @comment do |f| %>
+  <%= f.label :title %>
+  <%= f.text_field :title %>
+  <br>
+  <br>
+  <%= f.label :content %>
+  <%= f.text_area :content, :cols => "40", :rows => "10" %>
+  <br>
+  <br>
+  <%= f.submit %>
+<% end %>

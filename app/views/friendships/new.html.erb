@@ -1,0 +1,13 @@
+<h2>Add a Friend</h2>
+
+<%= form_for @friendship do |f| %>
+  <%= f.label :link %>
+  <%= f.text_field :link %>
+  <br>
+  <br>
+  <%= f.label :message %>
+  <%= f.text_area :message, :cols => "40", :rows => "10" %>
+  <br>
+  <br>
+  <%= f.submit %>
+<% end %>
