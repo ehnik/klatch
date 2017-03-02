@@ -1,4 +1,4 @@
-class CommentsController < ActionController::Base
+class CommentsController < ApplicationController
 
   def create
     @article = Article.find(:id)

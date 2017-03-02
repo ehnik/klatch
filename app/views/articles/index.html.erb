@@ -1,11 +1,17 @@
 <h2>Article Feed</h2>
+<% if @user %>
+  <p> There is a current user. </p>
+<% end %>
 
 <ul>
 <% if @user.friends.length > 0 %>
 <% @user.friends.each do |friend| %>
-  <% friend.article.each do |article| %>
+  <% friend.articles.each do |article| %>
     <li>
-      <%= link_to "#{article.title}", article_path(article.id) %>
+      <%= link_to "#{article.link}", user_article_path(article.user_id, article.id) %>
+      <br>
+      <%= "posted by #{User.find(article.user_id).name}"  %>
+      <%= article.message %>
     </li>
   <% end %>
   <% end %>
@@ -15,4 +21,6 @@
 <p> You don't have any friends yet! </p>
 <% end %>
 
-<p> <%= link_to "New Article", new_article_path %> </p>
+<p> Your profile </p>
+<%= link_to "View friends", "/user/#{current_user.id}/friendships/" %>
+<%= link_to "Share an article with your friends", "/user/#{current_user.id}/friendships/new" %>

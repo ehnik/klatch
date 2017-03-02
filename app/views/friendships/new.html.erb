@@ -1,13 +1,21 @@
-<h2>Add a Friend</h2>
+<h1> Add friends </h1>
+<p> Search for people you know </p>
 
-<%= form_for @friendship do |f| %>
-  <%= f.label :link %>
-  <%= f.text_field :link %>
-  <br>
-  <br>
-  <%= f.label :message %>
-  <%= f.text_area :message, :cols => "40", :rows => "10" %>
-  <br>
-  <br>
-  <%= f.submit %>
+<%= form_tag({:controller => "friendships", :action => "new"}, :method => :get, id: "search-form") do %>
+    <%= text_field_tag :search, params[:search], placeholder: "Search Users" %>
+    <%= submit_tag "Search", :name => nil %>
+<% end %>
+
+<% if @users %>
+  <ul>
+  <% @users.each do |user| %>
+    <li>
+    <% if Friendship.where(:user_id => current_user.id, :friend_id => user.id).exists? %>
+    <p> <%=user.name %> (currently friends) </p>
+    <% else %>
+    <%=user.name %> <%=link_to "Add", "/user/#{current_user.id}/friendships/new/#{user.id}" %>
+    </li>
+    <% end %>
+  </ul>
+<% end %>
 <% end %>

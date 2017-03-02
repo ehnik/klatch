@@ -1,8 +1,11 @@
-class ArticlesController < ActionController::Base
+class ArticlesController < ApplicationController
 
   def index
     @backdate = 24
-    @user = current_user                #number of hours back that articles are shown
+    @user = current_user
+
+    #@friends = Friendship.all
+             #number of hours back that articles are shown
   end
 
   def new
@@ -10,8 +13,9 @@ class ArticlesController < ActionController::Base
   end
 
   def create
-    @article = current_user.article.create!(article_params)
+    @article = current_user.articles.create!(article_params)
   end
+
 
   def edit
     @article = Article.find(:id)

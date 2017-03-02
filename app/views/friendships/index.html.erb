@@ -3,16 +3,13 @@
 <ul>
 <% if @user.friends.length > 0 %>
 <% @user.friends.each do |friend| %>
-  <% friend.article.each do |article| %>
     <li>
-      <%= link_to "#{article.title}", article_path(article.id) %>
+      <%= friend %>
     </li>
   <% end %>
   <% end %>
 </ul>
 
 <% else %>
-<p> You don't have any friends yet! </p>
+<p> You don't have any friends yet!  Go add some: link_to "Add Friends", new_article_path</p>
 <% end %>
-
-<p> <%= link_to "New Article", new_article_path %> </p>

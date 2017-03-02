@@ -8,8 +8,12 @@
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
-
   <body>
+    <% if current_user %>
+    <h1 class = #header> Hi <%=current_user.name%> </h1>
+    <% else %>
+    <p> "No one is logged in." </p>
+    <% end %>
     <%= yield %>
   </body>
 </html>

@@ -1,0 +1,15 @@
+<h2>Your Friends</h2>
+<p> <%=link_to "Add More Friends", "/user/:user_id/friendships/new" %> </p>
+
+<ul>
+<% if @user.friends.length > 0 %>
+<% @user.friends.each do |friend| %>
+    <li>
+      <%= friend.name %>
+    </li>
+  <% end %>
+</ul>
+
+<% else %>
+<p> You don't have any friends yet! </p>
+<% end %>
