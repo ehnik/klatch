@@ -13,10 +13,10 @@ class Users::SessionsController < Devise::SessionsController
     redirect_to articles_path
   end
 
-  # DELETE /resource/sign_out
-  # def destroy
-  #   super
-  # end
+  def destroy
+    super
+    redirect_to "/users/sign_up"
+  end
 
   # protected
 

@@ -2,18 +2,33 @@
 <html>
   <head>
     <title>Linkshare</title>
-    <%= csrf_meta_tags %>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+      <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+      <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+      <%= csrf_meta_tags %>
   </head>
   <body>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
     <% if current_user %>
-    <h1 class = #header> Hi <%=current_user.name%> </h1>
-    <% else %>
-    <p> "No one is logged in." </p>
+    <% puts current_user.first_name %>
+    <h1 class = "header"> Hi, <%=current_user.first_name%> </h1>
     <% end %>
+    <% if current_user %>
+    <nav>
+   <a href="/user/<%="#{current_user.id}"%>/friendships/">Friends</a> |
+  <a href="/user/<%="#{current_user.id}"%>/articles/feed">Feed</a> |
+  <a href="/user/<%="#{current_user.id}/articles"%>/">Your Articles</a> |
+  <a href="/user/<%="#{current_user.id}"%>/requests/"><%=
+  if Request.where(requestee_id: current_user.id).length>0
+    "Requests" + "(" + Request.where(requestee_id: current_user.id).length.to_s + ")"
+  else
+    "Requests"
+  end
+%></a> |
+  <a href="/users/sign_out" data-method="delete"> Sign Out</a>
+</nav>
+<% end %>
+
     <%= yield %>
   </body>
 </html>

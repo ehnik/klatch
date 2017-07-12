@@ -1,26 +1,28 @@
-<h2>Article Feed</h2>
-<% if @user %>
-  <p> There is a current user. </p>
-<% end %>
+<br>
+<h2>Your Articles</h2>
 
-<ul>
-<% if @user.friends.length > 0 %>
-<% @user.friends.each do |friend| %>
-  <% friend.articles.each do |article| %>
-    <li>
-      <%= link_to "#{article.link}", user_article_path(article.user_id, article.id) %>
+  <ul id = "feed">
+  <% if @user.articles.length > 0 %>
+    <%puts @user.articles%>
+    <% @user.articles.each do |article| %>
+      <li>
+        <%= link_to "#{article.link}"%>
+        <%= link_to "Edit", edit_user_article_path(:id=>article.id) %>
+        <%= link_to "Delete", delete_article_path(:id=>article.id), :method => :delete %>
+
+        <br>
+        <%= "#{article.message}"  %>
+      </li>
       <br>
-      <%= "posted by #{User.find(article.user_id).name}"  %>
-      <%= article.message %>
-    </li>
   <% end %>
+  </ul>
+  <% elsif @user.friends.length > 0 %>
+    <p> You haven't posted any articles yet! </p>
+  <% else %>
+    <p> You don't have any friends yet to share articles with! <%=link_to "Go make some", "/user/#{current_user.id}/friendships/new/" %>
+    </p>
   <% end %>
-</ul>
 
-<% else %>
-<p> You don't have any friends yet! </p>
-<% end %>
-
-<p> Your profile </p>
-<%= link_to "View friends", "/user/#{current_user.id}/friendships/" %>
-<%= link_to "Share an article with your friends", "/user/#{current_user.id}/friendships/new" %>
+  <% if @user.friends.length > 0 %>
+    <%= link_to "Share an article with your friends", "/user/#{current_user.id}/articles/new" %>
+  <% end %>

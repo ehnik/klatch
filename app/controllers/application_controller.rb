@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
     # root_path is there as a backup
   def after_sign_in_path_for(resource)
     if resource.is_a?(User)
-    articles_path
+    user_articles_path(current_user.id)
   else
     super
   end

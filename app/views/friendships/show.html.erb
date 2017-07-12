@@ -1,15 +1,41 @@
+<br>
 <h2>Your Friends</h2>
-<p> <%=link_to "Add More Friends", "/user/:user_id/friendships/new" %> </p>
 
 <ul>
 <% if @user.friends.length > 0 %>
 <% @user.friends.each do |friend| %>
     <li>
       <%= friend.name %>
+      <%= link_to "Delete", delete_friend_path(:user_id=>current_user.id, :friend_id=>friend.id),
+      :method => :delete, data: { confirm: "You are about to remove #{friend.name} as a friend. You will no longer be able to see his/her articles. Are you sure?" } %>
     </li>
   <% end %>
 </ul>
 
 <% else %>
 <p> You don't have any friends yet! </p>
+<% end %>
+
+<h3> Add friends </h3>
+<p> Search for people you know </p>
+
+<%= form_tag({:controller => "friendships", :action => "show"}, :method => :get, id: "search-form") do %>
+    <%= text_field_tag :search, params[:search], placeholder: "Search Users" %>
+    <%= submit_tag "Search", :name => nil %>
+<% end %>
+
+<% if @users %>
+  <ul>
+  <% @users.each do |user| %>
+    <li>
+    <% if Friendship.where(:user_id => current_user.id, :friend_id => user.id).exists? %>
+    <p> <%=user.name %> (currently friends) </p>
+    <% elsif Request.where({requestee_id:user.id, requester_id:current_user.id}).length>0%>
+    <p> <%=user.name %> (friend request pending) </p>
+    <% elsif user.id!=current_user.id%>
+    <%=user.name %> <%=link_to "Send friend request", requests_index_path(requestee_id: user.id, requester_id: current_user.id), :method => :post %>
+    </li>
+    <% end %>
+  </ul>
+<% end %>
 <% end %>

@@ -1,0 +1,21 @@
+<br>
+<h2>Your Requests</h2>
+
+  <ul id = "requests">
+  <% if @requests != nil %>
+    <%puts @requests%>
+    <% @requests.each do |request| %>
+      <li>
+        <%= link_to "Accept", "/user/#{current_user.id}/friendships/new/#{request.requester_id}?&request=true" %>
+        <%= link_to "Delete", "/user/#{current_user.id}/requests/#{request.id}", :method => :delete %>
+
+        <br>
+        <%= User.find(request.requester_id).name %>
+        <%= request.message  %>
+      </li>
+      <br>
+      <% end %>
+  </ul>
+  <% else %>
+    <p> You have no pending requests.</p>
+  <% end %>

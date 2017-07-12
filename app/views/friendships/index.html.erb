@@ -5,6 +5,7 @@
 <% @user.friends.each do |friend| %>
     <li>
       <%= friend %>
+      <%= link_to "Delete", id: "delete", delete_friend_path(:id=>article.id), :method => :delete %>
     </li>
   <% end %>
   <% end %>
