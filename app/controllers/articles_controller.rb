@@ -15,9 +15,11 @@ class ArticlesController < ApplicationController
     puts @friends
     puts "inbetween"
     friendArray = @friends.pluck(:friend_id)
-    articles = Article.where({user_id: friendArray})
-    articlesSorted = articles.order(:created_at)
-    puts articlesSorted
+    articlesUnsorted = Article.where({user_id: friendArray})
+    @articles = articlesUnsorted.order(created_at: :desc)
+    @feedArticles = @articles.length
+    puts @feedArticles
+
 
     render :template => "articles/feed"
 
