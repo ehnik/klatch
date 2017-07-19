@@ -8,25 +8,28 @@ class FriendshipsController < ApplicationController
   end
 
   def add
-    if Friendship.find_by_user_id_and_friend_id(current_user.id,params[:friend_id])!=nil
-      flash[:notice] = "You are already friends with #{User.find(params[:friend_id]).name}"
+    if Friendship.find_by_user_id_and_friend_id(current_user.id,params[:friend_id])!=nil && Friendship.find_by_user_id_and_friend_id(params[:friend_id],current_user.id)!=nil
+      flash[:notice] = "You are already friends with #{User.find(params[:friend_id]).first_name} #{User.find(params[:friend_id]).last_name}"
     else
-    Friendship.create!(:user_id => current_user.id, :friend_id => params[:friend_id])
-    flash[:notice] = "You are now friends with #{User.find(params[:friend_id]).name}"
+    friend = User.find(params[:friend_id])
+    Friendship.create!(user: current_user, friend: friend)
+    Friendship.create!(user: friend, friend: current_user)
+    flash[:notice] = "You are now friends with #{User.find(params[:friend_id]).first_name} #{User.find(params[:friend_id]).last_name}"
     end
     if params[:request]=="true"
-      puts "friendship add method is being run with request functionality"
       request=Request.find_by_requestee_id_and_requester_id(current_user.id,params[:friend_id])
       Request.delete(request.id)
     end
-    redirect_to "/user/#{current_user.id}/friendships/"
-  end
+    redirect_to requests_index_path
+    end
 
   def destroy
-    friendship = Friendship.find_by_user_id_and_friend_id(params[:user_id], params[:friend_id])
+    friendship1 = Friendship.find_by_user_id_and_friend_id(params[:user_id], params[:friend_id])
+    friendship2 = Friendship.find_by_user_id_and_friend_id(params[:friend_id], params[:user_id])
     friend = User.find(params[:friend_id])
-    Friendship.delete(friendship.id)
-    flash[:notice] = "You are no longer friends with #{friend.name}"
+    Friendship.delete(friendship1.id)
+    Friendship.delete(friendship2.id)
+    flash[:notice] = "You are no longer friends with #{friend.first_name} #{friend.last_name}"
     redirect_to "/user/#{current_user.id}/friendships/"
   end
 

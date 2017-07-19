@@ -1,1 +1,49 @@
+<br>
+<h2 id="messages-heading">Your Messages</h2>
 
+  <div id = "comments">
+  <% if @user.comments.length > 0 %>
+    <%@user.comments.each do |comment|%>
+    <%if User.where(id: comment.sender_id).length  > 0%>
+      <%if Article.where(id: comment.article_id).length > 0%>
+      <div class="comment">
+        <%="#{User.find(comment.sender_id).first_name} #{User.find(comment.sender_id).last_name} commented on your article '#{Article.find(comment.article_id).title}'"%>
+      </div>
+      <br>
+      <%else%>
+      <div class="comment">
+        <%= "#{User.find(comment.sender_id).first_name} #{User.find(comment.sender_id).last_name} commented on an article you deleted" %>
+      </div>
+        <% end %>
+        <div class="comment-content">
+          <%=comment.content%>
+          <%=link_to "Reply", articles_feed_path, :class => "reply-link"%>
+
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+  </div>
+
+
+  <div id = "sent-comments">
+  <% if @sentComments.length > 0 %>
+    <%@sentComments.each do |comment|%>
+      <%if User.where(id: comment.user_id).length  > 0%>
+        <%if Article.where(id: comment.article_id).length > 0%>
+            <div class = "sent-comment">
+              <%="You commented on #{User.find(comment.user_id).first_name} #{User.find(comment.user_id).last_name}'s article #{Article.find(comment.article_id).title}"%>
+            </div>
+            <br>
+          <%else%>
+            <div class = "sent-comment">
+              <%="You commented on a deleted article posted by #{User.find(comment.user_id).first_name} #{User.find(comment.user_id).last_name}"%>
+            </div>
+          <%end%>
+            <div class = "sent-comment-content">
+              <%=comment.content%>
+            </div>
+            <% end %>
+          <% end %>
+        <% end %>
+    </div>

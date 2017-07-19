@@ -35,5 +35,130 @@ li {list-style-type: none;
   text-align: left;
 }
 
+.feed-image {
+  height: 10%;
+  width: 10%;
+}
+
+.feed-avatar {
+  display: inline-block;
+}
+
+.feed-header {
+  margin-top: 2%;
+  margin-bottom: 4%;
+  text-align: center;
+}
+
+.feed-container {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+  justify-content: space-between;
+}
+
+.feed-heading {
+  background-color: beige;
+  width: auto;
+}
+
+.feed-details {
+  display: inline-block;
+  position: relative;
+}
+
+.feed-name {
+  font-size: 13px;
+}
+
+.feed-time {
+  font-size: 12px;
+}
+
+.feed-details {
+  display: inline-flex;
+  flex-direction: column;
+  position: absolute;
+  margin-left: 1%;
+  width: 100%;
+}
+
+.feed-message {
+  font-size: 14px;
+  margin-top: 1%;
+}
+
+.feed-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: space-between;
+  height: 90%;
+  background: #e6f2ff;
+}
+
+.feed-image {
+  height: 100%;
+  width: 100%;
+  margin-top: 2%;
+}
+
+.feed-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 3%;
+}
+
+.feed-description {
+  font-size: 13px;
+  align-self: center;
+  margin-top: 4%;
+}
+
+.new_comment {
+  order: 4;
+  flex-basis: content;
+}
+
+.index-title {
+  position: relative;
+  display:inline-block;
+}
+
+.index-avatar-container {
+  position: relative;
+  display:inline-block;
+}
+
+.index-image {
+  position: relative;
+  display:inline-block;
+  height: 35%;
+  width: 35%;
+}
+
+.index-description {
+  position: relative;
+  display:inline-block;
+  width: 40%;
+  height: auto;
+}
+
+.index-edit {
+  position: relative;
+  display:inline-block;
+  bottom: 15%;
+}
+
+.index-delete {
+  position: relative;
+  display:inline-block;
+  bottom: 15%;
+}
+
 h2 {
 }

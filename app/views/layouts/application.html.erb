@@ -10,22 +10,31 @@
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
     <% if current_user %>
-    <% puts current_user.first_name %>
-    <h1 class = "header"> Hi, <%=current_user.first_name%> </h1>
+    <h1 class = "header"> Hi, <%=current_user.first_name.capitalize%> </h1>
+    <%=image_tag(current_user.avatar.thumb.url) if current_user.avatar?%>
     <% end %>
     <% if current_user %>
     <nav>
    <a href="/user/<%="#{current_user.id}"%>/friendships/">Friends</a> |
   <a href="/user/<%="#{current_user.id}"%>/articles/feed">Feed</a> |
   <a href="/user/<%="#{current_user.id}/articles"%>/">Your Articles</a> |
+  <a href="/user/<%="#{current_user.id}/comments"%>/"><%=
+  if current_user.new_comments > 0
+     "Messages (#{current_user.new_comments.to_s})"
+  elsif current_user.new_comments == 0
+    "Messages"
+  end
+  %></a> |
   <a href="/user/<%="#{current_user.id}"%>/requests/"><%=
-  if Request.where(requestee_id: current_user.id).length>0
-    "Requests" + "(" + Request.where(requestee_id: current_user.id).length.to_s + ")"
+  if Request.where(requestee_id: current_user.id).length > 0
+    "Requests" + "(" + Request.where(requestee_id: current_user.id).length.to_s + ") "
   else
     "Requests"
   end
-%></a> |
+  %></a> |
+  <a href="/users/edit" data-method="get"> Account Settings </a> |
   <a href="/users/sign_out" data-method="delete"> Sign Out</a>
+
 </nav>
 <% end %>
 

@@ -13,11 +13,21 @@
     <%= f.text_field :last_name, autofocus: true %>
   </div>
 
+  <%= f.hidden_field :new_comments, :value => 0%>
+
   <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email, autofocus: true %>
   </div>
-
+  <p>Avatar</p>
+  <div class="field">
+    <%= f.label :avatar do %>
+      <%= f.file_field :avatar %>
+      <%= f.hidden_field :avatar_cache %>
+    <% end %>
+  </div>
+  <br>
+  <br>
   <div class="field">
     <%= f.label :password %>
     <% if @minimum_password_length %>

@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
     # root_path is there as a backup
   def after_sign_in_path_for(resource)
     if resource.is_a?(User)
-    user_articles_path(current_user.id)
+      articles_feed_path(current_user.id)
   else
     super
   end
@@ -26,7 +26,8 @@ class ApplicationController < ActionController::Base
 
 
  def configure_permitted_parameters
-   devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
+   devise_parameter_sanitizer.permit(:sign_up, keys: [:last_name, :first_name, :avatar, :avatar_cache, :remove_avatar, :new_comments])
+   devise_parameter_sanitizer.permit(:account_update, keys: [:last_name, :first_name, :email, :password, :password_confirmation, :current_password, :avatar, :avatar_cache, :remove_avatar, :new_comments])
  end
 
 end

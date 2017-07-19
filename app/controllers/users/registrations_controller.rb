@@ -5,12 +5,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def new
      super
      User.new
+     puts "new controller"
   end
 
   def create
     super
-    User.create!(user_params)
-    redirect_to articles_path
+    user = User.create!(user_params)
+    puts "lolzzz"
+    redirect_to articles_index_path(current_user.id)
   end
 
   # GET /resource/edit
@@ -49,13 +51,17 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   devise_parameter_sanitizer.permit(:account_update, keys: [:attribute])
   # end
 
-   #def after_sign_up_path_for(resource)
-    # super(resource)
-  #   redirect_to: user_articles_path
+  # def after_sign_up_path_for(resource)
+  #   super(resource)
+  #   redirect_to: articles_feed_path
   # end
 
   # The path used after sign up for inactive accounts.
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+  private
+    def user_params
+      params.permit(:sign_up, keys: [:last_name, :user, :first_name, :email, :password, :password_confirmation, :avatar, :avatar_cache, :remove_avatar, :new_comments])
+    end
 end

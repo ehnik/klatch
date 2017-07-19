@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   devise_for :users
   devise_scope :user do
-  get '/', to: 'devise/registrations#new'
+  get '/', to: 'devise/sessions#new'
+  get '/users/edit', to: 'devise/registrations#edit'
+
   end
 
   resources :users do
@@ -12,7 +14,9 @@ Rails.application.routes.draw do
   get '/user/:user_id/friendships', to: 'friendships#show', as: 'user_friends'
   get '/user/:user_id/friendships/new/:friend_id', to: 'friendships#add'
   get '/user/:user_id/articles/new/', to: 'articles#new',  as: 'articles_new'
-  get '/user/:user_id/articles/create/', to: 'articles#create',  as: 'articles_create'
+  get '/user/:user_id/comments', to: 'comments#index', as: 'comments_index'
+  post '/user/:user_id/:sender_id/:article_id/comments', to: 'comments#create', as: 'comments_create'
+  get '/user/:user_id/articles/create', to: 'articles#create',  as: 'articles_create'
   get '/user/:user_id/articles/feed/', to: 'articles#feed', as: 'articles_feed'
   get '/user/:user_id/articles/', to: 'articles#index', as: 'articles_index'
   get '/user/:user_id/requests', to: 'requests#index', as: 'requests_index'

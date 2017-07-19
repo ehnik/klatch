@@ -1,27 +1,57 @@
 <br>
-<h2>Your Feed</h2>
+<h2 class="feed-header">Your Feed</h2>
 
-<ul>
   <% if @user.friends.length > 0 %>
   <% @user.friends.each do |friend| %>
     <% friend.articles.each do |article| %>
-      <li>
-        <%= link_to "#{article.link}" %>
-        <%= "posted by #{friend.name}" %>
+      <div class="feed-container">
+        <div class="feed-heading">
+            <span class="feed-avatar">
+              <%=image_tag friend.avatar.thumb.url, :class => "feed_avatar" if friend.avatar?%>
+            </span>
+          <div class="feed-details">
+            <div class="feed-name"> <%= "#{friend.first_name} #{friend.last_name}" %> </div>
+            <div class="feed-time"><%="#{article.created_at.strftime("%-m/%d/%y at %l:%M %p ")}"%></div>
+          </div>
+        </div>
+          <% begin %>
+            <% object = LinkThumbnailer.generate(article.link) %>
+            <% rescue LinkThumbnailer::Exceptions => e %>
+            <% object = nil %>
+          <% end %>
+        <%if object!=nil%>
+          <%puts "object"%>
+          <div class="feed-main">
+          <span class="feed-message"><%="#{article.message}"%></span>
+          <div>
+            <%= image_tag object.images.first.src.to_s, :class => "feed-image"%>
+          </div>
+            <div class="feed-title">
+              <%=link_to object.title, article.link%>
+            </div>
+            <div class="feed-description">
+              <%=object.description%>
+            </div>
+
+            <%= form_for @comment, url: comments_create_path(user_id: friend.id, sender_id: current_user.id, article_id: article.id) do |f| %>
+            <%= f.text_field :content %>
+            <%= f.submit "Message #{friend.first_name} about this", :class => "submit" %>
+
+          <% end %>
+          <br>
+        <%end%>
+        </div>
+
         <br>
-        <%= "#{article.message}"  %>
-      </li>
-    <br>
-    <% @feedArticles +=1 %>
-    <% end %>
-  <% end %>
+          <% @feedArticles +=1 %>
+        <% end %>
+      </div>
+      <% end %>
   <%if @feedArticles== 0 %>
     <%="Your friends haven't shared anything yet!" %>
   <% end %>
 
-
-</ul>
   <% else %>
-  <p> You don't have any friends yet! <%=link_to "Go make some", "/user/#{current_user.id}/friendships/new/" %>
+  <p> You don't have any friends yet! <%=link_to "Go make some", "/user/#{current_user.id}/friendships/" %>
   </p>
   <% end %>

@@ -10,6 +10,7 @@ class ArticlesController < ApplicationController
     @backdate = 24
     @user = current_user
     @feedArticles = 0
+    @comment = Comment.new
     render :template => "articles/feed"
 
     #@friends = Friendship.all
@@ -22,7 +23,8 @@ class ArticlesController < ApplicationController
 
   def create
     @article = current_user.articles.create!(article_params)
-    redirect_to articles_feed_path
+    @article.makeThumbnail
+    redirect_to articles_index_path
   end
 
   def edit
@@ -43,7 +45,7 @@ class ArticlesController < ApplicationController
 
   private
   def article_params
-   params.require(:article).permit(:link, :message, :id)
+   params.require(:article).permit(:link, :message, :id, :title, :description, :pic_url)
   end
 
 end

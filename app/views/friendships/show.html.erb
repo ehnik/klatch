@@ -5,9 +5,10 @@
 <% if @user.friends.length > 0 %>
 <% @user.friends.each do |friend| %>
     <li>
-      <%= friend.name %>
+      <%= image_tag friend.avatar.thumb.url, :class => "friends-image" if friend.avatar?%>
+      <%= friend.first_name + " " + friend.last_name %>
       <%= link_to "Delete", delete_friend_path(:user_id=>current_user.id, :friend_id=>friend.id),
-      :method => :delete, data: { confirm: "You are about to remove #{friend.name} as a friend. You will no longer be able to see his/her articles. Are you sure?" } %>
+      :method => :delete, data: { confirm: "You are about to remove #{friend.first_name} as a friend. You will no longer be able to see his/her articles. Are you sure?" } %>
     </li>
   <% end %>
 </ul>
@@ -29,11 +30,11 @@
   <% @users.each do |user| %>
     <li>
     <% if Friendship.where(:user_id => current_user.id, :friend_id => user.id).exists? %>
-    <p> <%=user.name %> (currently friends) </p>
+    <p> <%=image_tag user.avatar.thumb.url, :class => "friends-search" if user.avatar?%> <%="#{user.first_name} #{user.last_name}"%> (currently friends) </p>
     <% elsif Request.where({requestee_id:user.id, requester_id:current_user.id}).length>0%>
-    <p> <%=user.name %> (friend request pending) </p>
+    <p> <%=image_tag user.avatar.thumb.url, :class => "friends-search" if user.avatar?%> <%=user.first_name + " " + user.last_name %> (friend request pending) </p>
     <% elsif user.id!=current_user.id%>
-    <%=user.name %> <%=link_to "Send friend request", requests_index_path(requestee_id: user.id, requester_id: current_user.id), :method => :post %>
+    <%=image_tag user.avatar.thumb.url, :class => "friends-search" if user.avatar?%> <%="#{user.first_name} #{user.last_name}"%> <%=link_to "Send friend request", requests_index_path(requestee_id: user.id, requester_id: current_user.id, results: params[:search]), :method => :post %>
     </li>
     <% end %>
   </ul>

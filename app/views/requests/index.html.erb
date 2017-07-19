@@ -2,15 +2,17 @@
 <h2>Your Requests</h2>
 
   <ul id = "requests">
-  <% if @requests != nil %>
+  <% if @requests.length>0 %>
     <%puts @requests%>
     <% @requests.each do |request| %>
       <li>
+        <%requester = User.find(request.requester_id)%>
+        <%=image_tag(requester.avatar.thumb.url) if requester.avatar?%>
         <%= link_to "Accept", "/user/#{current_user.id}/friendships/new/#{request.requester_id}?&request=true" %>
         <%= link_to "Delete", "/user/#{current_user.id}/requests/#{request.id}", :method => :delete %>
 
         <br>
-        <%= User.find(request.requester_id).name %>
+        <%= User.find(request.requester_id).first_name + " " + User.find(request.requester_id).last_name%>
         <%= request.message  %>
       </li>
       <br>

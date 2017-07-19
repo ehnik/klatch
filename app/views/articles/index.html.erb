@@ -6,20 +6,53 @@
     <%puts @user.articles%>
     <% @user.articles.each do |article| %>
       <li>
-        <%= link_to "#{article.link}"%>
-        <%= link_to "Edit", edit_user_article_path(:id=>article.id) %>
-        <%= link_to "Delete", delete_article_path(:id=>article.id), :method => :delete %>
+        <div class="article-container">
 
+        <div class="index-avatar-container">
+          <%=image_tag current_user.avatar.thumb.url, :class => "index_avatar" if current_user.avatar?%>
+          <div>
+            <%="#{current_user.first_name} #{current_user.last_name}"%>
+          </div>
+        </div>
+        <%=link_to article.title, article.link, class: "index-title"%>
+        <%= button_to "Edit", edit_user_article_path(:id=>article.id), :form_class => "index-edit", :method => :get %>
+        <%= button_to "Delete", delete_article_path(:id=>article.id), :form_class => "index-delete", :method => :delete %>
+        <% if article.pic_url!=nil%>
+        <div "index-image-container">
+          <%=link_to image_tag(article.pic_url, :class => "index-image"), article.link %>
+        <% end %>
+        </div>
+        <div class="index-description">
+          <%= article.description %>
+        </div>
         <br>
-        <%= "#{article.message}"  %>
+        <br>
+      
+
+        <h4> Comments </h4>
+        <% comments = Comment.where(article_id: article.id) %>
+        <% commentsSorted = comments.select(:sender_id).distinct %>
+        <% commentsSorted.each do |relation| %>
+            <div>
+              <%=image_tag User.find(relation.sender_id).avatar.thumb.url, :class => "feed_avatar" if User.find(relation.sender_id).avatar?%>
+              <%="#{User.find(relation.sender_id).first_name} #{User.find(relation.sender_id).last_name}:"%>
+            </div>
+              <%Comment.where(sender_id: relation.sender_id).each do |comment|%>
+                <div>
+                  <%="#{comment.content} #{comment.created_at.strftime("posted on %b %d, %Y at %l:%M %p")}"%>
+                </div>
+              <% end %>
+        <% end %>
+        <br>
+      </div>
       </li>
       <br>
-  <% end %>
+    <% end %>
   </ul>
   <% elsif @user.friends.length > 0 %>
     <p> You haven't posted any articles yet! </p>
   <% else %>
-    <p> You don't have any friends yet to share articles with! <%=link_to "Go make some", "/user/#{current_user.id}/friendships/new/" %>
+    <p> You don't have any friends yet to share articles with! <%=link_to "Go make some", "/user/#{current_user.id}/friendships/" %>
     </p>
   <% end %>
 

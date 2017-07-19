@@ -20,9 +20,11 @@ class RequestsController < ApplicationController
   end
 
   def create
+    @params = params[:result]
     @request = Request.create!(request_params)
-    flash[:notice] = "You have sent a friend request to #{User.find(params[:requestee_id]).name}"
-    redirect_to "/user/#{current_user.id}/friendships/"
+    friend = User.find(params[:requestee_id])
+    flash[:notice] = "You have sent a friend request to #{friend.first_name} #{friend.last_name}"
+    redirect_to user_friends_path(:search=>"#{@params}")
   end
 
   private
