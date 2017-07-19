@@ -11,6 +11,14 @@ class ArticlesController < ApplicationController
     @user = current_user
     @feedArticles = 0
     @comment = Comment.new
+    @friends = Friendship.where(user_id: current_user.id)
+    puts @friends
+    puts "inbetween"
+    friendArray = @friends.pluck(:friend_id)
+    articles = Article.where({user_id: friendArray})
+    articlesSorted = articles.order(:created_at)
+    puts articlesSorted
+
     render :template => "articles/feed"
 
     #@friends = Friendship.all

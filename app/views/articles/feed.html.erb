@@ -2,9 +2,9 @@
 <h2 class="feed-header">Your Feed</h2>
 
   <% if @user.friends.length > 0 %>
+  <div class="feed-container">
   <% @user.friends.each do |friend| %>
     <% friend.articles.each do |article| %>
-      <div class="feed-container">
         <div class="feed-heading">
             <span class="feed-avatar">
               <%=image_tag friend.avatar.thumb.url, :class => "feed_avatar" if friend.avatar?%>
@@ -30,7 +30,11 @@
               <%=link_to object.title, article.link%>
             </div>
             <div class="feed-description">
-              <%=object.description%>
+              <% if object.description.length > 300 %>
+                <%="#{object.description.truncate(300, separator: ' ')}"%>
+              <% else %>
+                <%= object.description%>
+              <% end %>
             </div>
 
             <%= form_for @comment, url: comments_create_path(user_id: friend.id, sender_id: current_user.id, article_id: article.id) do |f| %>
@@ -46,7 +50,7 @@
           <% @feedArticles +=1 %>
         <% end %>
       </div>
-      <% end %>
+    <% end %>
   <%if @feedArticles== 0 %>
     <%="Your friends haven't shared anything yet!" %>
   <% end %>
