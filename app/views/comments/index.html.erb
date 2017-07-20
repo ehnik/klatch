@@ -1,49 +1,101 @@
 <br>
-<h2 id="messages-heading">Your Messages</h2>
 
-  <div id = "comments">
-  <% if @user.comments.length > 0 %>
-    <%@user.comments.each do |comment|%>
-    <%if User.where(id: comment.sender_id).length  > 0%>
-      <%if Article.where(id: comment.article_id).length > 0%>
-      <div class="comment">
-        <%="#{User.find(comment.sender_id).first_name} #{User.find(comment.sender_id).last_name} commented on your article '#{Article.find(comment.article_id).title}'"%>
-      </div>
-      <br>
-      <%else%>
-      <div class="comment">
-        <%= "#{User.find(comment.sender_id).first_name} #{User.find(comment.sender_id).last_name} commented on an article you deleted" %>
-      </div>
-        <% end %>
-        <div class="comment-content">
-          <%=comment.content%>
-          <%=link_to "Reply", articles_feed_path, :class => "reply-link"%>
+<div class = "discussion-flex">
 
+  <div class="friend-articles-flex">
+    <div class="discussion-heading">Friends' Articles</div>
+
+  <% if @articles.length > 0 %>
+
+    <%@articles.each do |article|%>
+      <%if article.user_id == current_user.id%>
+
+          <% begin %>
+            <% object = LinkThumbnailer.generate(article.link) %>
+            <% rescue LinkThumbnailer::Exceptions => e %>
+            <% object = nil %>
+          <% end %>
+
+        <%if object!=nil%>
+        <div class="discussion-main">
+          <span class="feed-message"><%="#{article.message}"%></span>
+          <div>
+            <%= image_tag object.images.first.src.to_s, :class => "discussion-image"%>
+          </div>
+          <div class="feed-title">
+            <%=link_to object.title, article.link%>
+          </div>
+          <div class="feed-description">
+            <% if object.description.length > 300 %>
+              <%="#{object.description.truncate(300, separator: ' ')}"%>
+            <% else %>
+              <%= object.description%>
+            <% end %>
+          </div>
         </div>
-      <% end %>
-    <% end %>
-  <% end %>
+        <%end%>
+
+        <ul>
+        <div><%="Discussions:"%></div>
+        <%article.comments.pluck(:sender_id).uniq.each do |sender_id|%>
+          <li>
+          <div><%=image_tag User.find(sender_id).avatar.thumb.url, :class => "feed_avatar" if User.find(sender_id).avatar?%>
+          </div>
+          <%="#{User.find(sender_id).first_name} #{User.find(sender_id).last_name}"%>
+          </li>
+          <%end%>
+        </ul>
+        <%end%>
+      <%end%>
+    <%end%>
   </div>
 
+<div class="user-articles-flex">
+  <div class="discussion-heading">Your Articles</div>
 
-  <div id = "sent-comments">
-  <% if @sentComments.length > 0 %>
-    <%@sentComments.each do |comment|%>
-      <%if User.where(id: comment.user_id).length  > 0%>
-        <%if Article.where(id: comment.article_id).length > 0%>
-            <div class = "sent-comment">
-              <%="You commented on #{User.find(comment.user_id).first_name} #{User.find(comment.user_id).last_name}'s article #{Article.find(comment.article_id).title}"%>
-            </div>
-            <br>
-          <%else%>
-            <div class = "sent-comment">
-              <%="You commented on a deleted article posted by #{User.find(comment.user_id).first_name} #{User.find(comment.user_id).last_name}"%>
-            </div>
-          <%end%>
-            <div class = "sent-comment-content">
-              <%=comment.content%>
-            </div>
-            <% end %>
-          <% end %>
+<% if @articles.length > 0 %>
+
+  <%@articles.each do |article|%>
+    <%if article.user_id == current_user.id%>
+
+        <% begin %>
+          <% object = LinkThumbnailer.generate(article.link) %>
+          <% rescue LinkThumbnailer::Exceptions => e %>
+          <% object = nil %>
         <% end %>
-    </div>
+
+      <%if object!=nil%>
+      <div class="discussion-main">
+        <span class="feed-message"><%="#{article.message}"%></span>
+        <div>
+          <%= image_tag object.images.first.src.to_s, :class => "discussion-image"%>
+        </div>
+        <div class="feed-title">
+          <%=link_to object.title, article.link%>
+        </div>
+        <div class="feed-description">
+          <% if object.description.length > 300 %>
+            <%="#{object.description.truncate(300, separator: ' ')}"%>
+          <% else %>
+            <%= object.description%>
+          <% end %>
+        </div>
+      </div>
+      <%end%>
+
+      <ul>
+      <div><%="Discussions:"%></div>
+      <%article.comments.pluck(:sender_id).uniq.each do |sender_id|%>
+        <li>
+        <div><%=image_tag User.find(sender_id).avatar.thumb.url, :class => "feed_avatar" if User.find(sender_id).avatar?%>
+        </div>
+        <%="#{User.find(sender_id).first_name} #{User.find(sender_id).last_name}"%>
+        </li>
+        <%end%>
+      </ul>
+      <%end%>
+    <%end%>
+  <%end%>
+</div>
+
+</div>

@@ -124,6 +124,12 @@ li {list-style-type: none;
   flex-basis: content;
 }
 
+.index-header {
+  margin-top: 2%;
+  margin-bottom: 2%;
+  text-align: center;
+}
+
 .index-title {
   position: relative;
   display:inline-block;
@@ -200,6 +206,45 @@ li {list-style-type: none;
 .comment-message {
   font-size: 13px;
   width: 100%;
+}
+
+.discussion-link {
+  margin-top: 3%;
+  text-align: center;
+}
+
+.share-article {
+  text-align: center;
+  margin-bottom: 3%;
+}
+
+.discussion-image {
+  height: 25%;
+  width: 25%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.discussion-heading {
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.discussion-main {
+  display: flex;
+  flex-direction: column;
+  margin-right: auto;
+  margin-left: auto;
+  height: auto;
+  width: 90%;
+  background: #e6f2ff;
+}
+
+.discussion-flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 h2 {

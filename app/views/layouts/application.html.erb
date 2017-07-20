@@ -20,9 +20,9 @@
   <a href="/user/<%="#{current_user.id}/articles"%>/">Your Articles</a> |
   <a href="/user/<%="#{current_user.id}/comments"%>/"><%=
   if current_user.new_comments > 0
-     "Messages (#{current_user.new_comments.to_s})"
+     "Discussions (#{current_user.new_comments.to_s})"
   elsif current_user.new_comments == 0
-    "Messages"
+    "Discussions"
   end
   %></a> |
   <a href="/user/<%="#{current_user.id}"%>/requests/"><%=

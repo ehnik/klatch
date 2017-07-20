@@ -15,6 +15,13 @@ class CommentsController < ApplicationController
     @user = current_user
     @user.update(new_comments: 0)
     @sentComments = Comment.where(sender_id: current_user.id)
+    feedArticles = @sentComments.pluck(:article_id).uniq
+    #^^creates array of article IDs that user has commented on
+    userArticles = current_user.comments.pluck(:article_id).uniq
+    #creates array of user article IDs that other users have commented on
+    allArticles = userArticles + feedArticles
+    @articles = Article.where(id: allArticles)
+    puts @articles
   end
 
   private

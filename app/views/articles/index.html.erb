@@ -1,5 +1,11 @@
 <br>
-<h2 class="feed-header" id="index-header">Your Articles</h2>
+<h2 class="index-header" id="index-header">Your Articles</h2>
+
+  <div class="share-article">
+    <% if @user.friends.length > 0 %>
+      <%= link_to "Share an article with your friends", "/user/#{current_user.id}/articles/new" %>
+      <% end %>
+  </div>
 
   <% if @user.articles.length > 0 %>
 
@@ -44,6 +50,13 @@
             <%= button_to "Delete", delete_article_path(:id=>article.id), :form_class => "index-delete", :method => :delete %>
           </div>
 
+        <%if article.comments.length > 0 %>
+          <div class="discussion-link">
+            <%=link_to "Go to discussion", article.link%>
+          </div>
+        <% end %>
+
+
         <div class="comments">
           <h4 class="comments-header"> Comments </h4>
           <% comments = Comment.where(article_id: article.id) %>
@@ -59,7 +72,7 @@
                 </div>
 
                 <div class="comment-time">
-                  
+
                   <%if comment.created_at.strftime("%d/%m/%Y") == @date %>
                     <%="#{comment.created_at.strftime("%l: %M %p")}"%>
                   <%elsif comment.created_at.strftime("%Y") == @year %>
@@ -95,8 +108,4 @@
   <% else %>
     <p> You don't have any friends yet to share articles with! <%=link_to "Go make some", "/user/#{current_user.id}/friendships/" %>
     </p>
-  <% end %>
-
-  <% if @user.friends.length > 0 %>
-    <%= link_to "Share an article with your friends", "/user/#{current_user.id}/articles/new" %>
   <% end %>
