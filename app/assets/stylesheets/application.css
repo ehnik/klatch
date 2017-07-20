@@ -149,15 +149,57 @@ li {list-style-type: none;
 }
 
 .index-edit {
-  position: relative;
-  display:inline-block;
-  bottom: 15%;
+
+  left: 35%;
+}
+.index-buttons {
+  display: flex;
+  flex-direction: row;
+}
+.index-delete {
+  left: auto;
+  right: auto;
 }
 
-.index-delete {
-  position: relative;
-  display:inline-block;
-  bottom: 15%;
+.comment-details-flex {
+  display: inline-block;
+  width: 100%;
+  margin-left: 1%;
+}
+
+.comment-image-flex {
+  display: flex;
+  flex-direction: column;
+}
+
+.comments-header {
+  bottom: 10%;
+}
+
+.comment-container {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+  background: beige;
+}
+
+.comment-name {
+  font-size: 13px;
+  font-weight: bold;
+  width: auto;
+}
+
+.comment-time {
+  display: inline-block;
+  font-size: 12px;
+  margin-top: 2%;
+  margin-right: 3%;
+  width: 105%;
+}
+.comment-message {
+  font-size: 13px;
+  width: 100%;
 }
 
 h2 {

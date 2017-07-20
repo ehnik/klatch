@@ -3,6 +3,9 @@ class ArticlesController < ApplicationController
 
   def index
     @user = current_user
+    @date = DateTime.now.strftime("%d/%m/%Y")
+    @year = DateTime.now.strftime("%Y")
+    puts @date
     render :template => "articles/index"
   end
 

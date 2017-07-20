@@ -3,7 +3,6 @@
 
   <% if @user.friends.length > 0 %>
 
-
       <% @articles.each do |article| %>
 
       <% friend = User.find(article.user_id) %>

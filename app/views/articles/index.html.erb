@@ -1,54 +1,95 @@
 <br>
-<h2>Your Articles</h2>
+<h2 class="feed-header" id="index-header">Your Articles</h2>
 
-  <ul id = "feed">
   <% if @user.articles.length > 0 %>
-    <%puts @user.articles%>
-    <% @user.articles.each do |article| %>
-      <li>
-        <div class="article-container">
 
-        <div class="index-avatar-container">
-          <%=image_tag current_user.avatar.thumb.url, :class => "index_avatar" if current_user.avatar?%>
-          <div>
-            <%="#{current_user.first_name} #{current_user.last_name}"%>
+    <% @user.articles.each do |article| %>
+
+      <div class="feed-container">
+
+        <div class="feed-heading">
+            <span class="feed-avatar">
+              <%=image_tag current_user.avatar.thumb.url, :class => "feed_avatar" if current_user.avatar?%>
+            </span>
+          <div class="feed-details">
+            <div class="feed-name"> <%= "#{current_user.first_name} #{current_user.last_name}" %> </div>
+            <div class="feed-time"><%="#{article.created_at.strftime("%-m/%d/%y at %l:%M %p ")}"%></div>
           </div>
         </div>
-        <%=link_to article.title, article.link, class: "index-title"%>
-        <%= button_to "Edit", edit_user_article_path(:id=>article.id), :form_class => "index-edit", :method => :get %>
-        <%= button_to "Delete", delete_article_path(:id=>article.id), :form_class => "index-delete", :method => :delete %>
-        <% if article.pic_url!=nil%>
-        <div "index-image-container">
-          <%=link_to image_tag(article.pic_url, :class => "index-image"), article.link %>
-        <% end %>
-        </div>
-        <div class="index-description">
-          <%= article.description %>
-        </div>
-        <br>
-        <br>
-      
 
-        <h4> Comments </h4>
-        <% comments = Comment.where(article_id: article.id) %>
-        <% commentsSorted = comments.select(:sender_id).distinct %>
-        <% commentsSorted.each do |relation| %>
-            <div>
-              <%=image_tag User.find(relation.sender_id).avatar.thumb.url, :class => "feed_avatar" if User.find(relation.sender_id).avatar?%>
-              <%="#{User.find(relation.sender_id).first_name} #{User.find(relation.sender_id).last_name}:"%>
-            </div>
-              <%Comment.where(sender_id: relation.sender_id).each do |comment|%>
+        <% begin %>
+            <% object = LinkThumbnailer.generate(article.link) %>
+            <% rescue LinkThumbnailer::Exceptions => e %>
+            <% object = nil %>
+          <% end %>
+
+        <%if object!=nil%>
+        <div class="feed-main">
+          <span class="feed-message"><%="#{article.message}"%></span>
+          <div>
+            <%= image_tag object.images.first.src.to_s, :class => "feed-image"%>
+          </div>
+          <div class="feed-title">
+            <%=link_to object.title, article.link%>
+          </div>
+          <div class="feed-description">
+            <% if object.description.length > 300 %>
+              <%="#{object.description.truncate(300, separator: ' ')}"%>
+            <% else %>
+              <%= object.description%>
+            <% end %>
+          </div>
+          <div class="index-buttons">
+            <%= button_to "Edit", edit_user_article_path(:id=>article.id), :form_class => "index-edit", :method => :get %>
+            <%= button_to "Delete", delete_article_path(:id=>article.id), :form_class => "index-delete", :method => :delete %>
+          </div>
+
+        <div class="comments">
+          <h4 class="comments-header"> Comments </h4>
+          <% comments = Comment.where(article_id: article.id) %>
+          <% commentsSorted = comments.select(:sender_id).distinct %>
+          <% commentsSorted.each do |relation| %>
+            <%comment = Comment.find_by_sender_id(relation.sender_id)%>
+            <div class="comment-container">
+
+              <div class="comment-image-flex">
+
                 <div>
-                  <%="#{comment.content} #{comment.created_at.strftime("posted on %b %d, %Y at %l:%M %p")}"%>
+                  <%=image_tag User.find(relation.sender_id).avatar.thumb.url, :class => "feed_avatar" if User.find(relation.sender_id).avatar?%>
                 </div>
-              <% end %>
-        <% end %>
-        <br>
+
+                <div class="comment-time">
+                  
+                  <%if comment.created_at.strftime("%d/%m/%Y") == @date %>
+                    <%="#{comment.created_at.strftime("%l: %M %p")}"%>
+                  <%elsif comment.created_at.strftime("%Y") == @year %>
+
+                    <%="#{comment.created_at.strftime("%B %e")}"%>
+                  <%else %>
+                    <%="#{comment.created_at.strftime("%B %Y")}"%>
+                  <%end%>
+                </div>
+
+              </div>
+
+                <div class="comment-details-flex">
+                    <span class="comment-name"><%="#{User.find(relation.sender_id).first_name} #{User.find(relation.sender_id).last_name}"%></span>
+                    <span class="comment-message"><%=comment.content%></span>
+
+              </div>
+
+            </div>
+            <% end %>
+          <br>
+        </div>
+
       </div>
-      </li>
+
+      </div>
       <br>
+      <% end %>
     <% end %>
-  </ul>
+
   <% elsif @user.friends.length > 0 %>
     <p> You haven't posted any articles yet! </p>
   <% else %>
