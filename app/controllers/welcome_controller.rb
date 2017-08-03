@@ -1,7 +1,7 @@
 class WelcomeController < ApplicationController
 
   def index
-    render 'devise/registrations/new'
+    redirect_to new_user_registration_path
   end
 
 end
