@@ -1,9 +1,8 @@
 Rails.application.routes.draw do
-  root 'sessions#new'
+  root 'users/registrations#new'
   devise_for :users, :controllers => {:registrations => "users/registrations",
     :sessions => "users/sessions", :passwords => "users/passwords"}
   devise_scope :user do
-  get '/', to: 'users/sessions#new'
   #post '/users/sign_in', to: 'users/sessions#create'
   #post '/users', to: 'users/registrations#create'
   #get '/users/edit', to: 'users/registrations#edit'
