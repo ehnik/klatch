@@ -2,6 +2,7 @@ class RequestsController < ApplicationController
 
   def index
     @user = current_user
+    @navRequests = 0
     @requests = Request.where(requestee_id: @user.id)
   end
 

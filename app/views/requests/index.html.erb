@@ -1,13 +1,12 @@
 <br>
-<h2>Your Requests</h2>
+<h2 class="requests-header">Your Requests</h2>
 
   <ul id = "requests">
   <% if @requests.length>0 %>
-    <%puts @requests%>
     <% @requests.each do |request| %>
       <li>
         <%requester = User.find(request.requester_id)%>
-        <%=image_tag(requester.avatar.thumb.url) if requester.avatar?%>
+        <%=avatar_for(requester)%>
         <%= link_to "Accept", "/user/#{current_user.id}/friendships/new/#{request.requester_id}?&request=true" %>
         <%= link_to "Delete", "/user/#{current_user.id}/requests/#{request.id}", :method => :delete %>
 

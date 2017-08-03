@@ -14,13 +14,149 @@
  *= require_self
  */
 
+ body {
+   margin: 0px 8px;
+   height: 100%;
+ }
+
+ .share-nav {
+   position: relative;
+   margin-left: auto;
+   margin-right: auto;
+   width: 100px;
+ }
+
+ .no-articles {
+   text-align: center;
+ }
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  width: auto;
+}
+
+.top-header-container {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-start;
+  justify-content:space-between;
+  padding-bottom: 5%;
+}
+
 .header{
+  /*top: 11%;*/
+  margin: 0px 0px;
   font-size: 15px;
   text-align: left;
 }
 
+.header-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.about {
+  display:inline-block;
+  width: 100px;
+}
+
+.sign-up{
+  background-color: #e7bf98;
+}
+
+.sign-up-flex {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: row;
+  font-family: 'Patua One', cursive;
+}
+
+.new_user {
+  font-family: 'Lato', sans-serif;
+}
+
+.alert {
+  color: red;
+}
+
+.welcome {
+  text-align: center;
+  border-style: solid;
+  position: absolute;
+  z-index: 5;
+  background-color: gray;
+  bottom: 20%;
+  width: 90%;
+  right:5%;
+  left:5%;
+}
+
+.welcome-hide {
+  display:none;
+  text-align: center;
+  border-style: solid;
+  position: absolute;
+  z-index: 5;
+  background-color: gray;
+  bottom: 20%;
+  width: 90%;
+  right:5%;
+  left:5%;
+}
+
+.welcome.hide{
+  display:none;
+}
+
+.welcome-hide.show{
+  display: block;
+}
+
+.welcome-button {
+  display: block;
+  margin-top: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.welcome-hide-button {
+  display: block;
+  margin-top: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.linkshare-heading h1{
+  color: #2f100b;
+}
+
+.linkshare-heading {
+  width: auto;
+  /*margin-left: 8%;*/
+  margin-right: 5%;
+  font-family: 'Patua One';
+}
+
+.linkshare-heading p{
+  font-family: 'Lato', sans-serif;
+}
+
+.sign-up-form {
+  font-family: 'Lato', sans-serif;
+  width:50%;
+  padding-right: 15%;
+  padding-left: 5%;
+}
+
+form.sign-up-form{
+  font-family: 'Lato', sans-serif;
+}
+
 nav{
-  text-align: left;
+  text-align: center;
 }
 
 nav ul{
@@ -35,13 +171,41 @@ li {list-style-type: none;
   text-align: left;
 }
 
-.feed-image {
-  height: 10%;
-  width: 10%;
+#requests{
+  text-align: center;
+  padding: 0px;
 }
 
+.friends-heading {
+  text-align: center;
+}
+
+.friends-main{
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+
+.friends-list {
+  padding: 0;
+
+}
+
+.requests-header {
+  text-align: center;
+}
+
+.avatar-container {
+  display: flex;
+  flex-direction: column-reverse;
+
+}
+
+.edit-field {
+  display: inline;
+}
 .feed-avatar {
-  display: inline-block;
+  display: inline;
 }
 
 .feed-header {
@@ -102,21 +266,32 @@ li {list-style-type: none;
 }
 
 .feed-image {
-  height: 100%;
+  max-height: 250px;
+  /*height: 100%;
   width: 100%;
+  */
   margin-top: 2%;
 }
 
 .feed-title {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: bold;
   margin-top: 3%;
+  text-align: center;
+}
+
+.wrap {
+  word-wrap:break-word;
+  width: 70%;
+  margin-top:auto;
+  margin-bottom:auto;
 }
 
 .feed-description {
   font-size: 13px;
   align-self: center;
   margin-top: 4%;
+  position: relative;
 }
 
 .new_comment {
@@ -159,8 +334,12 @@ li {list-style-type: none;
   left: 35%;
 }
 .index-buttons {
-  display: flex;
+  display: inline-flex;
+  position: absolute;
+  right: 25.5%;
   flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-end;
 }
 .index-delete {
   left: auto;
@@ -183,11 +362,71 @@ li {list-style-type: none;
 }
 
 .comment-container {
-  display: flex;
+  display: none;
   flex-direction: row;
   align-items: stretch;
   justify-content: space-between;
   background: beige;
+  width: 90%;
+}
+
+.comment-container.show {
+  display: flex;
+}
+
+.reply {
+  display: none;
+}
+
+.reply.show {
+  display: block;
+}
+
+.comment-master-container .show{
+  display: block;
+}
+
+.discussion-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.show-more-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.show-more-image {
+  display:inline-block;
+}
+
+.show-more-name {
+  font-size: 11px;
+  display: block;
+}
+
+.show-more-button {
+  display: inline-block;
+  margin-bottom: 2%;
+}
+
+#show-more-image.show {
+  display: inline-block;
+}
+
+.new-comment {
+  text-align: center;
+  background-color: orange;
+  background-clip: content-box;
+  font-size: 12px;
+  width: 40%;
+  margin-right: auto;
+  margin-left:auto;
+  border-radius: 20%;
+  display: none;
 }
 
 .comment-name {
@@ -198,7 +437,7 @@ li {list-style-type: none;
 
 .comment-time {
   display: inline-block;
-  font-size: 12px;
+  font-size: 10px;
   margin-top: 2%;
   margin-right: 3%;
   width: 105%;
@@ -211,6 +450,7 @@ li {list-style-type: none;
 .discussion-link {
   margin-top: 3%;
   text-align: center;
+  font-size: 13px;
 }
 
 .share-article {
@@ -229,22 +469,96 @@ li {list-style-type: none;
   text-align: center;
   margin-right: auto;
   margin-left: auto;
+  font-weight: bold;
 }
 
-.discussion-main {
+.user-articles-flex {
+  width: 50%;
+}
+
+.feed-pic {
+  display: inline;
+  max-height: 200px;
+  margin-right: auto;
+  margin-left: auto;
+  overflow: hidden;
+  position: relative;
+}
+
+
+.feed-articles-flex {
+  width: 50%;
+}
+
+.feed-discussion-date {
+  font-size: 10px;
+}
+.feed-discussion-article-flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 3%;
+  background-clip: content-box;
+  background: #e6f2ff;
+}
+
+.feed-discussion-article-details {
+  display: flex;
+  flex-direction: column;
+  margin-top: 3%;
+  width: auto;
+  padding-left: 1%;
+
+}
+.feed-discussion-image {
+  display:inline-block;
+}
+
+.feed-discussion-name {
+  font-size: 11px;
+  font-weight: bold;
+  overflow: hidden;
+}
+
+button.new {
+  background-color: orange;
+}
+
+.feed-discussion {
+  text-align: center;
+}
+.feed-discussion-title {
+  font-size: 13px;
+  font-weight: bold;
+  display: inline-block;
+  width: auto;
+  text-align: center;
+}
+
+.feed-discussion-description {
+  font-size: 13px;
+  align-self: center;
+}
+.article-main {
   display: flex;
   flex-direction: column;
   margin-right: auto;
   margin-left: auto;
   height: auto;
   width: 90%;
-  background: #e6f2ff;
+      background: #e6f2ff;
 }
 
 .discussion-flex {
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+.discussion-subhead {
+  text-align: center;
+  font-weight: bold;
+  font-size: 12px;
 }
 
 h2 {

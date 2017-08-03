@@ -1,12 +1,21 @@
 class ArticlesController < ApplicationController
 
+  require 'uri'
 
   def index
     @user = current_user
-    @date = DateTime.now.strftime("%d/%m/%Y")
-    @year = DateTime.now.strftime("%Y")
-    puts @date
     render :template => "articles/index"
+  end
+
+  def set_home_views
+    puts session[:home_views]
+    if current_user.sign_in_count == 1
+      if session[:home_views]== nil
+        session[:home_views] = 1
+      else
+        session[:home_views] = session[:home_views]+1
+      end
+    end
   end
 
   def feed
@@ -15,14 +24,10 @@ class ArticlesController < ApplicationController
     @feedArticles = 0
     @comment = Comment.new
     @friends = Friendship.where(user_id: current_user.id)
-    puts @friends
-    puts "inbetween"
     friendArray = @friends.pluck(:friend_id)
     articlesUnsorted = Article.where({user_id: friendArray})
     @articles = articlesUnsorted.order(created_at: :desc)
     @feedArticles = @articles.length
-    puts @feedArticles
-
 
     render :template => "articles/feed"
 
@@ -35,8 +40,18 @@ class ArticlesController < ApplicationController
   end
 
   def create
-    @article = current_user.articles.create!(article_params)
-    @article.makeThumbnail
+    begin
+      uri = URI(params[:article][:link])
+        if uri.scheme=="https" || uri.scheme=="http"
+          @article = current_user.articles.create!(article_params)
+          @article.makeThumbnail
+        else
+          flash[:alert] = "Please enter URL in correct format with http:// or https:// prefix"
+        end
+    rescue
+      puts "rescued!"
+      flash[:alert] = "URL invalid. Please enter a valid URL."
+    end
     redirect_to articles_index_path
   end
 
@@ -46,7 +61,6 @@ class ArticlesController < ApplicationController
 
   def destroy
     Article.delete(params[:id])
-    puts "destroyed!"
     redirect_to articles_index_path
   end
 
@@ -58,7 +72,7 @@ class ArticlesController < ApplicationController
 
   private
   def article_params
-   params.require(:article).permit(:link, :message, :id, :title, :description, :pic_url)
+   params.require(:article).permit(:link, :message, :id, :title, :description, :pic_url, :created_at)
   end
 
 end

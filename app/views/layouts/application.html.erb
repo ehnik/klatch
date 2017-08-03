@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Linkshare</title>
+    <title>Klatch</title>
+    <link href="https://fonts.googleapis.com/css?family=Patua+One|Pontano+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
       <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
       <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
       <%= csrf_meta_tags %>
@@ -9,34 +11,54 @@
   <body>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
-    <% if current_user %>
-    <h1 class = "header"> Hi, <%=current_user.first_name.capitalize%> </h1>
-    <%=image_tag(current_user.avatar.thumb.url) if current_user.avatar?%>
-    <% end %>
+    <div class="top-header-container">
+      <div class="button-container">
+        <button class="about"> About Klatch</button>
+        <% if current_user %>
+          <%= button_to "Share an article", "/user/#{current_user.id}/articles/new", :class=>"share-article share-nav",  method: :get %>
+        <% end %>
+      </div>
+      <% if current_user %>
+      <div class="header-container">
+        <h1 class = "header"> Hi, <%=current_user.first_name %> </h1>
+        <%=avatar_for(current_user)%>
+      </div>
+      <% end %>
+    </div>
     <% if current_user %>
     <nav>
    <a href="/user/<%="#{current_user.id}"%>/friendships/">Friends</a> |
   <a href="/user/<%="#{current_user.id}"%>/articles/feed">Feed</a> |
   <a href="/user/<%="#{current_user.id}/articles"%>/">Your Articles</a> |
-  <a href="/user/<%="#{current_user.id}/comments"%>/"><%=
-  if current_user.new_comments > 0
-     "Discussions (#{current_user.new_comments.to_s})"
-  elsif current_user.new_comments == 0
+  <a data-comments="<%=current_user.comments.where(new_reply:true).length%>" id="discussion-nav" href="/user/<%="#{current_user.id}/comments"%>/"><%=
+  if current_user.comments.where(new_reply:true).length > 0
+     "Discussions (#{current_user.comments.where(new_reply:true).length})"
+  else
     "Discussions"
   end
   %></a> |
-  <a href="/user/<%="#{current_user.id}"%>/requests/"><%=
-  if Request.where(requestee_id: current_user.id).length > 0
-    "Requests" + "(" + Request.where(requestee_id: current_user.id).length.to_s + ") "
-  else
-    "Requests"
-  end
-  %></a> |
+  <a href="/user/<%="#{current_user.id}"%>/requests/">
+  <%if Request.where(requestee_id: current_user.id).length > 0%>
+    <%="Requests(#{Request.where(requestee_id: current_user.id).length.to_s})"%>
+  <%else%>
+    <%="Requests"%>
+  <%end%>
+  </a> |
   <a href="/users/edit" data-method="get"> Account Settings </a> |
   <a href="/users/sign_out" data-method="delete"> Sign Out</a>
+  </nav>
 
-</nav>
 <% end %>
+    <% if current_user %>
+    <% puts current_user.sign_in_count %>
+    <% puts session[:home_views] %>
+       <%if current_user.sign_in_count==1 && session[:home_views]==15%>
+          <% puts "rendered" %>
+          <%= render "articles/welcome" %>
+       <%else%>
+          <%= render "articles/welcome_hide" %>
+       <%end%>
+    <%end%>
 
     <%= yield %>
   </body>

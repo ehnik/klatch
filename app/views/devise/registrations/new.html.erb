@@ -1,4 +1,10 @@
-<h2>Sign up</h2>
+<body class="sign-up">
+
+<div class="sign-up-flex">
+
+<div class="sign-up-form">
+
+  <h2>Sign up</h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= devise_error_messages! %>
@@ -27,7 +33,6 @@
     <% end %>
   </div>
   <br>
-  <br>
   <div class="field">
     <%= f.label :password %>
     <% if @minimum_password_length %>
@@ -46,4 +51,24 @@
   </div>
 <% end %>
 
-<%= render "devise/shared/links" %>
+  <%= render "devise/shared/links" %>
+
+</div>
+
+<div class="linkshare-heading">
+  <h1> Welcome to Klatch! </h1>
+  <h3> Let your friends pique your interest and pick your brain</h3>
+  <p>Klatch is a link sharing platform that keeps you in the loop with peace of mind.
+  Share breaking news, opinion pieces, and other links with people you trust.
+  <br>
+  <br>
+  Just want to read content? No problem. Klatch's discussion feature is separate from your feed,.
+  All conversation is bi-directional only, so when you comment on a friend's article, only they can see it, and vice versa.
+  <br>
+  <br>
+  No anonymous negativity, no wondering who's reading your discussions--no worries.
+  </p>
+</div>
+
+</div>
+</body>

@@ -1,101 +1,252 @@
 <br>
 
+<%@newComments.each do |comment|%>
+  <p class="new-comment"> <%="#{User.find(comment.sender_id).first_name} #{User.find(comment.sender_id).last_name} commented on your article" %> </p>
+<%end%>
+
 <div class = "discussion-flex">
 
-  <div class="friend-articles-flex">
-    <div class="discussion-heading">Friends' Articles</div>
+        <div class="feed-articles-flex">
+          <div class="discussion-heading">Friends' Articles</div>
 
-  <% if @articles.length > 0 %>
+            <%@feedArticles.each do |article|%>
 
-    <%@articles.each do |article|%>
-      <%if article.user_id == current_user.id%>
+              <% if article.comments.length > 0 %>
 
-          <% begin %>
-            <% object = LinkThumbnailer.generate(article.link) %>
-            <% rescue LinkThumbnailer::Exceptions => e %>
-            <% object = nil %>
-          <% end %>
+                <% article.makeThumbnail %>
 
-        <%if object!=nil%>
-        <div class="discussion-main">
-          <span class="feed-message"><%="#{article.message}"%></span>
-          <div>
-            <%= image_tag object.images.first.src.to_s, :class => "discussion-image"%>
-          </div>
-          <div class="feed-title">
-            <%=link_to object.title, article.link%>
-          </div>
-          <div class="feed-description">
-            <% if object.description.length > 300 %>
-              <%="#{object.description.truncate(300, separator: ' ')}"%>
-            <% else %>
-              <%= object.description%>
-            <% end %>
-          </div>
-        </div>
-        <%end%>
+              <div class="article-main">
 
-        <ul>
-        <div><%="Discussions:"%></div>
-        <%article.comments.pluck(:sender_id).uniq.each do |sender_id|%>
-          <li>
-          <div><%=image_tag User.find(sender_id).avatar.thumb.url, :class => "feed_avatar" if User.find(sender_id).avatar?%>
-          </div>
-          <%="#{User.find(sender_id).first_name} #{User.find(sender_id).last_name}"%>
-          </li>
+                    <% user = User.find(article.user_id) %>
+
+                  <div class="feed-discussion-article-flex">
+
+                    <div class="feed-avatar-container">
+
+                      <div class="feed-discussion-image">
+                        <%=avatar_for(current_user)%>
+                      </div>
+
+                      <div class="feed-discussion-name">
+                        <%="#{user.first_name} #{user.last_name}"%>
+                      </div>
+
+                      <div class="feed-discussion-date localize">
+                        <%=article.created_at%>
+                      </div>
+                    </div>
+
+
+                    <div class="feed-discussion-article-details">
+
+                      <%if article.description == nil %>
+
+                        <div class="feed-title">
+                          <p class="wrap"><%=link_to article.title, article.link%></p>
+                        </div>
+
+                      <%else %>
+
+                        <div class="feed-title">
+                          <%=link_to article.title, article.link%>
+                        </div>
+
+                      <%end%>
+
+                      <div class="feed-discussion-description">
+                        <%= article.description%>
+                      </div>
+
+                    </div>
+
+                  </div>
+                </div>
+
+
+                  <div class="discussion-container">
+
+                    <div class="discussion-subhead">Discussions</div>
+
+
+                    <%article.getCommenterIdsFeed(current_user).each_with_index do |sender_id,index|%>
+
+
+                      <% comments = article.commentsForFeed(current_user, sender_id) %>
+                      <% newComments = article.comments.where({sender_id: sender_id, new_reply:true}) %>
+
+
+                      <% if article.comments.where({sender_id: sender_id, new_reply:true}).length>0 %>
+
+                      <button class="show-more-button <%="class-#{article.id}-#{index}"%> new" id="<%="#{article.id}-#{sender_id}"%>" data-name="<%="#{User.find(sender_id).first_name} #{User.find(sender_id).last_name}"%>"
+                        data-number="<%=newComments.length%>" type="button"><%="Show discussion with #{user.first_name} #{user.last_name} (#{newComments.length})"%></button>
+
+                      <% else %>
+
+                        <button class="show-more-button <%="class-#{article.id}-#{index}"%>" type="button"><%="Show discussion with #{user.first_name} #{user.last_name}"%></button>
+
+                      <% end %>
+
+                      <% comments.each do |comment| %>
+
+                          <% user = User.find(comment.sender_id) %>
+
+                          <div class="comment-container <%="class-#{article.id}-#{index}"%>">
+
+                          <div class="comment-image-flex">
+
+                            <div><%=avatar_for(current_user)%>
+                            </div>
+
+                            <div class="comment-time localize">
+
+                              <%=comment.created_at%>
+
+                            </div>
+
+                          </div>
+
+                          <div class="comment-details-flex">
+                            <span class="comment-name"><%="#{user.first_name} #{user.last_name}"%></span>
+                            <span class="comment-message"><%=comment.content%></span>
+                          </div>
+
+                        </div>
+
+                      <%end%>
+
+                  <div class="reply <%="class-#{article.id}-#{index}"%>">
+                  <%= form_for @comment, url: comments_index_path(user_id: sender_id, sender_id: current_user.id, article_id: article.id) do |f| %>
+                  <%= f.text_field :content %>
+                  <%= f.submit "Reply", :class => "submit" %>
+                  <% end %>
+                  </div>
+
+                <%end%>
+            </div>
+            <%end%>
           <%end%>
-        </ul>
-        <%end%>
-      <%end%>
-    <%end%>
-  </div>
-
-<div class="user-articles-flex">
-  <div class="discussion-heading">Your Articles</div>
-
-<% if @articles.length > 0 %>
-
-  <%@articles.each do |article|%>
-    <%if article.user_id == current_user.id%>
-
-        <% begin %>
-          <% object = LinkThumbnailer.generate(article.link) %>
-          <% rescue LinkThumbnailer::Exceptions => e %>
-          <% object = nil %>
-        <% end %>
-
-      <%if object!=nil%>
-      <div class="discussion-main">
-        <span class="feed-message"><%="#{article.message}"%></span>
-        <div>
-          <%= image_tag object.images.first.src.to_s, :class => "discussion-image"%>
         </div>
-        <div class="feed-title">
-          <%=link_to object.title, article.link%>
-        </div>
-        <div class="feed-description">
-          <% if object.description.length > 300 %>
-            <%="#{object.description.truncate(300, separator: ' ')}"%>
-          <% else %>
-            <%= object.description%>
-          <% end %>
-        </div>
+
+
+      <div class="user-articles-flex">
+        <div class="discussion-heading">Your Articles</div>
+
+
+        <%@userArticles.each do |article|%>
+
+          <%if article.comments.length > 0 %>
+
+            <% article.makeThumbnail %>
+
+            <div class="article-main">
+
+            <%if article.description == nil %>
+
+              <div class="feed-title wrap">
+
+            <%else %>
+
+              <div class="feed-title">
+
+            <%end%>
+
+                <%=link_to article.title, article.link%>
+
+            </div>
+
+
+
+              <div class="feed-description">
+                <%= article.description %>
+              </div>
+
+            </div>
+
+
+            <div class="discussion-subhead">Discussions</div>
+
+            <div class="discussion-container">
+
+            <% article.getCommenterIds(current_user).each_with_index do |sender_id,index|%>
+
+              <% comments = article.commentsForUserArticle(sender_id, current_user) %>
+              <% user = User.find(sender_id) %>
+              <%puts "user"%>
+              <%puts sender_id%>
+
+
+              <div class="show-more-container">
+                <div class="show-more-image">
+                  <%=avatar_for(current_user)%>
+                </div>
+
+                <div class="show-more-name">
+                  <%="#{user.first_name} #{user.last_name}"%>
+                </div>
+              </div>
+
+              <% newComments = article.comments.where({sender_id: sender_id, new_reply:true}) %>
+
+              <% if article.comments.where({sender_id: sender_id, new_reply:true}).length> 0 %>
+
+                <button class="show-more-button <%="class-#{article.id}-#{index}"%> new" id="<%="#{article.id}-#{sender_id}"%>" data-name="<%="#{User.find(sender_id).first_name} #{User.find(sender_id).last_name}"%>"
+                  data-number="<%=newComments.length%>" type="button"><%="Show discussion with #{user.first_name} #{user.last_name} (#{newComments.length})"%></button>
+
+              <% else %>
+
+                <button class="show-more-button <%="class-#{article.id}-#{index}"%>" type="button"><%="Show discussion with #{user.first_name} #{user.last_name}"%></button>
+
+              <% end %>
+
+              <% comments.each do |comment| %>
+
+                <% user = User.find(comment.sender_id) %>
+
+                  <div class="comment-container <%="class-#{article.id}-#{index}"%>">
+
+                    <div class="comment-image-flex">
+
+                      <div><%=avatar_for(current_user)%>
+                      </div>
+
+                        <div class="comment-time localize">
+
+                          <%=comment.created_at%>
+
+                        </div>
+
+                      </div>
+
+                      <div class="comment-details-flex">
+
+                        <span class="comment-name"><%="#{user.first_name} #{user.last_name}"%></span>
+
+                        <span class="comment-message"><%=comment.content%></span>
+
+                      </div>
+
+                    </div>
+
+                  <%end%>
+
+                    <div class="reply <%="class-#{article.id}-#{index}"%>">
+                      <%= form_for @comment, url: comments_index_path(user_id: sender_id,
+                      sender_id: current_user.id, article_id: article.id) do |f| %>
+                      <%= f.text_field :content %>
+                      <%= f.submit "Reply", :class => "submit" %>
+                      <% end %>
+                    </div>
+
+                <%end%>
+
+                  </div>
+
+              <%end%>
+
+            <%end%>
+
       </div>
-      <%end%>
 
-      <ul>
-      <div><%="Discussions:"%></div>
-      <%article.comments.pluck(:sender_id).uniq.each do |sender_id|%>
-        <li>
-        <div><%=image_tag User.find(sender_id).avatar.thumb.url, :class => "feed_avatar" if User.find(sender_id).avatar?%>
-        </div>
-        <%="#{User.find(sender_id).first_name} #{User.find(sender_id).last_name}"%>
-        </li>
-        <%end%>
-      </ul>
-      <%end%>
-    <%end%>
-  <%end%>
-</div>
+    </div>
 
-</div>
+  </div>

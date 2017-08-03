@@ -1,6 +1,7 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 # before_action :configure_sign_up_params, only: [:create]
 # before_action :configure_account_update_params, only: [:update]
+  layout "landing"
 
   def new
      super
@@ -9,10 +10,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def create
-    super
-    user = User.create!(user_params)
-    puts "lolzzz"
-    redirect_to articles_index_path(current_user.id)
+    puts params[:user]
+    if User.where(email: params[:user][:email]).length>0
+      flash[:alert] = "This email has already been registered."
+      redirect_back fallback_location: new_user_session_path
+    else
+      super
+      @user.update!(first_name: @user.first_name.split.map(&:capitalize).join(' '),
+      last_name: @user.last_name.split.map(&:capitalize).join(' '))
+      if @user.avatar==nil
+        @user.update!(avatar: default.jpg)
+      end
+    end
   end
 
   # GET /resource/edit
@@ -26,9 +35,23 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # DELETE /resource
-  # def destroy
-  #   super
-  # end
+  def destroy
+    friends1 = Friendship.where(user_id:current_user.id).pluck(:id).uniq
+    friends2 = Friendship.where(friend_id:current_user.id).pluck(:id).uniq
+    request1 = Request.where(requester_id:current_user.id).pluck(:id).uniq
+    request2 = Request.where(requestee_id:current_user.id).pluck(:id).uniq
+    comment1 = Comment.where(sender_id: current_user.id).pluck(:id).uniq
+    comment2 = Comment.where(user_id: current_user.id).pluck(:id).uniq
+    articles = Article.where(user_id: current_user.id).pluck(:id).uniq
+    Friendship.delete((friends1+friends2))
+    puts "friends"
+    Request.delete((request1+request2))
+    puts "requests"
+    Comment.delete((comment1+comment2))
+    puts "comments"
+    Article.delete(articles)
+     super
+   end
 
   # GET /resource/cancel
   # Forces the session data which is usually expired after sign
@@ -61,7 +84,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super(resource)
   # end
   private
+
+    def
     def user_params
-      params.permit(:sign_up, keys: [:last_name, :user, :first_name, :email, :password, :password_confirmation, :avatar, :avatar_cache, :remove_avatar, :new_comments])
+      params.permit(:sign_up, keys: [:last_name, :user, :first_name, :email, :password, :password_confirmation, :home_views, :avatar, :avatar_cache, :remove_avatar, :new_comments])
     end
 end

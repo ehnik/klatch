@@ -29,6 +29,18 @@ class FriendshipsController < ApplicationController
     friend = User.find(params[:friend_id])
     Friendship.delete(friendship1.id)
     Friendship.delete(friendship2.id)
+    friendComments = current_user.comments.where(sender_id: friend.id)
+    userComments = friend.comments.where(sender_id: current_user.id)
+    if friendComments.length>0
+      friendComments.each do |comment|
+        Comment.delete(comment.id)
+      end
+    end
+    if userComments.length>0
+      userComments.each do |comment|
+        Comment.delete(comment.id)
+      end
+    end
     flash[:notice] = "You are no longer friends with #{friend.first_name} #{friend.last_name}"
     redirect_to "/user/#{current_user.id}/friendships/"
   end

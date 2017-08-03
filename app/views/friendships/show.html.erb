@@ -1,11 +1,13 @@
 <br>
-<h2>Your Friends</h2>
+<h2 class="friends-heading">Your Friends</h2>
 
-<ul>
+<div class="friends-main">
+
 <% if @user.friends.length > 0 %>
+  <ul class="friends-list">
 <% @user.friends.each do |friend| %>
     <li>
-      <%= image_tag friend.avatar.thumb.url, :class => "friends-image" if friend.avatar?%>
+      <%=avatar_for(friend)%>
       <%= friend.first_name + " " + friend.last_name %>
       <%= link_to "Delete", delete_friend_path(:user_id=>current_user.id, :friend_id=>friend.id),
       :method => :delete, data: { confirm: "You are about to remove #{friend.first_name} as a friend. You will no longer be able to see his/her articles. Are you sure?" } %>
@@ -18,25 +20,30 @@
 <% end %>
 
 <h3> Add friends </h3>
-<p> Search for people you know </p>
+<p> Search for people you know (leave blank to show all users) </p>
 
 <%= form_tag({:controller => "friendships", :action => "show"}, :method => :get, id: "search-form") do %>
     <%= text_field_tag :search, params[:search], placeholder: "Search Users" %>
     <%= submit_tag "Search", :name => nil %>
 <% end %>
 
+  <ul class="friends-list">
 <% if @users %>
-  <ul>
+
   <% @users.each do |user| %>
     <li>
     <% if Friendship.where(:user_id => current_user.id, :friend_id => user.id).exists? %>
-    <p> <%=image_tag user.avatar.thumb.url, :class => "friends-search" if user.avatar?%> <%="#{user.first_name} #{user.last_name}"%> (currently friends) </p>
+    <p> <%=avatar_for(user)%> <%="#{user.first_name} #{user.last_name}"%> (currently friends) </p>
     <% elsif Request.where({requestee_id:user.id, requester_id:current_user.id}).length>0%>
-    <p> <%=image_tag user.avatar.thumb.url, :class => "friends-search" if user.avatar?%> <%=user.first_name + " " + user.last_name %> (friend request pending) </p>
+    <p> <%=avatar_for(user)%> <%=user.first_name + " " + user.last_name %> (friend request sent) </p>
+    <% elsif Request.where({requestee_id:current_user.id, requester_id:user.id}).length>0%>
+    <p> <%=avatar_for(user)%> <%=user.first_name + " " + user.last_name %> <%=link_to "(friend request waiting your approval)", requests_index_path%> </p>
     <% elsif user.id!=current_user.id%>
-    <%=image_tag user.avatar.thumb.url, :class => "friends-search" if user.avatar?%> <%="#{user.first_name} #{user.last_name}"%> <%=link_to "Send friend request", requests_index_path(requestee_id: user.id, requester_id: current_user.id, results: params[:search]), :method => :post %>
+    <%=avatar_for(user)%> <%="#{user.first_name} #{user.last_name}"%> <%=link_to "Send friend request", requests_index_path(requestee_id: user.id, requester_id: current_user.id, results: params[:search]), :method => :post %>
     </li>
     <% end %>
+
+<% end %>
   </ul>
 <% end %>
-<% end %>
+</div>
