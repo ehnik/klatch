@@ -10,6 +10,6 @@ CarrierWave.configure do |config|
       region: 'us-east-2'
   }
   config.storage = :fog
-  config.fog_directory  = ENV['S3_Bucket']
+  config.fog_directory  = ENV["S3_BUCKET"]
   config.fog_public     = false
 end
