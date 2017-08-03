@@ -1,7 +1,7 @@
 class WelcomeController < ApplicationController
 
   def index
-    render 'users/registrations/new'
+    render 'devise/registrations/new'
   end
-  
+
 end
