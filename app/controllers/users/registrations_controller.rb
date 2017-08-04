@@ -16,8 +16,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
       redirect_back fallback_location: new_user_session_path
     else
       super
-      @user.update!(first_name: @user.first_name.split.map(&:capitalize).join(' '),
-      last_name: @user.last_name.split.map(&:capitalize).join(' '))
+      firstName = @user.first_name.split.map(&:capitalize).join(' ')
+      lastName = @user.last_name.slice(0,1).capitalize + @user.last_name.slice(1..-1)
+      @user.update!(first_name: firstName,
+      last_name: lastName)
       if @user.avatar==nil
         @user.update!(avatar: default.jpg)
       end

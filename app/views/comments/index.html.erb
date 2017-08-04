@@ -24,7 +24,7 @@
                     <div class="feed-avatar-container">
 
                       <div class="feed-discussion-image">
-                        <%=avatar_for(current_user)%>
+                        <%=avatar_for(user)%>
                       </div>
 
                       <div class="feed-discussion-name">
@@ -94,7 +94,7 @@
 
                           <div class="comment-image-flex">
 
-                            <div><%=avatar_for(current_user)%>
+                            <div><%=avatar_for(user)%>
                             </div>
 
                             <div class="comment-time localize">
@@ -116,7 +116,7 @@
 
                   <div class="reply <%="class-#{article.id}-#{index}"%>">
                   <%= form_for @comment, url: comments_index_path(user_id: sender_id, sender_id: current_user.id, article_id: article.id) do |f| %>
-                  <%= f.text_field :content %>
+                  <%= f.text_area :content, cols: 59, rows: 1 %>
                   <%= f.submit "Reply", :class => "submit" %>
                   <% end %>
                   </div>
@@ -171,13 +171,11 @@
 
               <% comments = article.commentsForUserArticle(sender_id, current_user) %>
               <% user = User.find(sender_id) %>
-              <%puts "user"%>
-              <%puts sender_id%>
 
 
               <div class="show-more-container">
                 <div class="show-more-image">
-                  <%=avatar_for(current_user)%>
+                  <%=avatar_for(user)%>
                 </div>
 
                 <div class="show-more-name">
@@ -206,7 +204,7 @@
 
                     <div class="comment-image-flex">
 
-                      <div><%=avatar_for(current_user)%>
+                      <div><%=avatar_for(user)%>
                       </div>
 
                         <div class="comment-time localize">
@@ -232,7 +230,7 @@
                     <div class="reply <%="class-#{article.id}-#{index}"%>">
                       <%= form_for @comment, url: comments_index_path(user_id: sender_id,
                       sender_id: current_user.id, article_id: article.id) do |f| %>
-                      <%= f.text_field :content %>
+                      <%= f.text_area :content, cols: 60, rows: 1 %>
                       <%= f.submit "Reply", :class => "submit" %>
                       <% end %>
                     </div>
