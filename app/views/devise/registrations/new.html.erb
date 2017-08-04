@@ -4,7 +4,8 @@
 
 <div class="sign-up-form">
 
-  <h2>Sign up</h2>
+  <h2 class="sign-up-heading">Sign up      | <a class="log-in-link" href="/users/sign_in">Log in</a>
+</h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= devise_error_messages! %>
@@ -50,8 +51,6 @@
     <%= f.submit "Sign up" %>
   </div>
 <% end %>
-
-  <%= render "devise/shared/links" %>
 
 </div>
 
