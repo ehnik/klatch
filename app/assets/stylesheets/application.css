@@ -206,6 +206,7 @@ li {list-style-type: none;
 }
 .feed-avatar {
   display: inline;
+  max-width: 38px;
 }
 
 .feed-header {
