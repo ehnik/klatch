@@ -10,9 +10,10 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
- *= require_tree .
- *= require_self
+
+
  */
+
 
  body {
    margin: 0px 8px;
@@ -255,12 +256,14 @@ textarea#comment_content.feed-discussion {
 }
 
 textarea#comment_content.reply-feed {
-  width: 90%;
+  max-width: 100%;
+  position:relative;
   resize: vertical;
 }
 
 .submit-feed {
   position: relative;
+  width: 50%;
 }
 
 .link-container{
@@ -372,6 +375,8 @@ textarea#comment_content.reply-feed {
 }
 
 .new_comment {
+  display: flex;
+  flex-direction: column;
   position: relative;
   order: 4;
   flex-basis: content;

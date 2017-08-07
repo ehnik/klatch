@@ -1,13 +1,17 @@
 <h2>Share an Article</h2>
 
 <%= form_for @article, :url => { :action => "create" } do |f| %>
-  <%= f.label :link %>
+  <div class="link-container">
+  <%= f.label :link, :class => "new-article-message" %>
   <%= f.text_field :link %>
+  </div>
   <br>
   <br>
-  <%= f.label :message %>
+  <div class="message-container">
+  <%= f.label :message, :class => "new-article-message"  %>
   <%= f.text_area :message, :cols => "40", :rows => "10" %>
+  <%= f.submit "Share article", :class => "submit-article"%>
+</div>
   <br>
   <br>
-  <%= f.submit "Share article"%>
 <% end %>

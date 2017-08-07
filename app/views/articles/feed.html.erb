@@ -41,8 +41,8 @@
             </div>
 
             <%= form_for @comment, url: comments_feed_create_path(user_id: friend.id, sender_id: current_user.id, article_id: article.id) do |f| %>
-            <%= f.text_area :content, cols: 60, rows: 1 %>
-            <%= f.submit "Message #{friend.first_name} about this", :class => "submit" %>
+            <%= f.text_area :content, cols: 68, rows: 1, :class => "reply-feed" %>
+            <%= f.submit "Message #{friend.first_name} about this", :class => "submit-feed" %>
             <% end %>
 
             <br>

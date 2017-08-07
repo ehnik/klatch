@@ -10,9 +10,10 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
- *= require_tree .
- *= require_self
+
+
  */
+
 
  body {
    margin: 0px 8px;
@@ -206,74 +207,11 @@ li {list-style-type: none;
   display: inline;
 }
 
-input#article_link {
-  max-width: 90%;
-}
-
-textarea#article_message {
-  max-width: 90%;
-  position:static;
-  left: 0%;
-}
-
-.submit-article {
-  position: relative;
-  bottom: 5%;
-  width: 90px;
-}
-
-.submit{
-  position: relative;
-  left: 0.5%;
-  bottom: 5%;
-  width: 90px;
-}
-
-#goodbye {
-  position: relative;
-  bottom: 5%;
-  width: 90px;
-}
-
-#hello {
-  position: relative;
-  bottom: 5%;
-  width: 90px;
-}
-
-textarea#comment_content.personal-discussion {
-  max-width: 90%;
-  position:relative;
-  left: 0.5%;
-  right: 1.5%;
-}
-
-textarea#comment_content.feed-discussion {
-  position:relative;
-  resize: vertical;
-  width: 90%;
-}
-
-textarea#comment_content.reply-feed {
-  width: 90%;
-  resize: vertical;
-}
-
-.submit-feed {
-  position: relative;
-}
-
-.link-container{
-  display: flex;
-  flex-direction: column;
-}
-
-.message-container{
-  display: flex;
-  flex-direction: column;
-}
-
-.new-article-message {
+textarea {
+    width: 90%;
+    position: relative;
+    left: 5%;
+    max-width: 100%;
 }
 
 .feed-avatar {
@@ -372,7 +310,6 @@ textarea#comment_content.reply-feed {
 }
 
 .new_comment {
-  position: relative;
   order: 4;
   flex-basis: content;
 }
@@ -458,10 +395,6 @@ textarea#comment_content.reply-feed {
 
 .reply.show {
   display: block;
-    max-width: 98%;
-    position: relative;
-    left: 4%;
-  }
 }
 
 .comment-master-container .show{
