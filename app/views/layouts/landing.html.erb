@@ -12,20 +12,20 @@
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
     <% if current_user %>
-    <h1 class = "header"> Hi, <%=current_user.first_name %> </h1>
-    <%=avatar_for(current_user)%>
+      <h1 class = "header"> Hi, <%=current_user.first_name %> </h1>
+      <%=avatar_for(current_user)%>
     <% end %>
     <% if current_user %>
-    <nav>
-   <a href="/user/<%="#{current_user.id}"%>/friendships/">Friends</a> |
-  <a href="/user/<%="#{current_user.id}"%>/articles/feed">Feed</a> |
-  <a href="/user/<%="#{current_user.id}/articles"%>/">Your Articles</a> |
-  <a data-comments="<%=current_user.comments.where(new_reply:true).length%>" id="discussion-nav" href="/user/<%="#{current_user.id}/comments"%>/"><%=
-  if current_user.comments.where(new_reply:true).length > 0
-     "Discussions (#{current_user.comments.where(new_reply:true).length})"
-  else
-    "Discussions"
-  end
+      <nav>
+        <a href="/user/<%="#{current_user.id}"%>/friendships/">Friends</a> |
+        <a href="/user/<%="#{current_user.id}"%>/articles/feed">Feed</a> |
+        <a href="/user/<%="#{current_user.id}/articles"%>/">Your Articles</a> |
+        <a data-comments="<%=current_user.comments.where(new_reply:true).length%>" id="discussion-nav" href="/user/<%="#{current_user.id}/comments"%>/"><%=
+        if current_user.comments.where(new_reply:true).length > 0
+          "Discussions (#{current_user.comments.where(new_reply:true).length})"
+        else
+          "Discussions"
+        end
   %></a> |
   <a href="/user/<%="#{current_user.id}"%>/requests/">
   <%if Request.where(requestee_id: current_user.id).length > 0%>

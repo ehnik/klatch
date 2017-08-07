@@ -10,9 +10,10 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
- *= require_tree .
- *= require_self
+
+
  */
+
 
  body {
    margin: 0px 8px;
@@ -33,24 +34,20 @@
 .button-container {
   display: flex;
   flex-direction: column;
-  order: 3;
   width: auto;
 }
 
 .top-header-container {
   display: flex;
-  flex-direction: row;
-  align-items: flex-end;
+  flex-direction: row-reverse;
+  align-items: flex-start;
   justify-content:space-between;
   padding-bottom: 5%;
 }
 
 .app-title {
-  font-size: 30px;
+  font-size: 48px;
   text-align: center;
-  font-family: 'Patua One', cursive;
-  color: #2f100b;
-  order: 2;
 }
 
 .header{
@@ -58,6 +55,7 @@
   margin: 0px 0px;
   font-size: 15px;
   text-align: left;
+  font-family: 'Patua One', cursive;
 }
 
 .header-container {
@@ -471,6 +469,7 @@ textarea#comment_content.reply-feed {
     position: relative;
     left: 4%;
   }
+}
 
 .comment-master-container .show{
   display: block;
