@@ -7,17 +7,6 @@ class ArticlesController < ApplicationController
     render :template => "articles/index"
   end
 
-  def set_home_views
-    puts session[:home_views]
-    if current_user.sign_in_count == 1
-      if session[:home_views]== nil
-        session[:home_views] = 1
-      else
-        session[:home_views] = session[:home_views]+1
-      end
-    end
-  end
-
   def feed
     @backdate = 24
     @user = current_user

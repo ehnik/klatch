@@ -6,8 +6,6 @@ class User < ApplicationRecord
   has_many :requests
   has_many :requesters, through: :requests
 
-  attr_accessor :home_views
-
   mount_uploader :avatar, AvatarUploader
 
   #has_many :inverse_friendships, :class_name => "Friendship", :foreign_key => "friend_id"
@@ -17,12 +15,6 @@ class User < ApplicationRecord
 
    validates_integrity_of  :avatar
    validates_processing_of :avatar
-
-   def increment_home_views
-     views = self.home_views
-     newViews = views+1
-     self.update!(home_views: newViews)
-   end
 
   private
     def avatar_size_validation

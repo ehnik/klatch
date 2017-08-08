@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :set_home_views
 
 
   #private
@@ -11,26 +10,12 @@ class ApplicationController < ActionController::Base
   #    store_location_for(:user, articles_path)
   #  end
 
-  def set_home_views
-    puts session[:home_views]
-    if current_user
-      if current_user.sign_in_count == 1
-        if session[:home_views]== nil
-          session[:home_views] = 1
-        else
-        session[:home_views] = session[:home_views]+1
-        end
-      end
-    end
-  end
-
 
   private
     # override the devise method for where to go after signing out because theirs
     # always goes to the root path. Because devise uses a session variable and
     # the session is destroyed on log out, we need to use request.referrer
     # root_path is there as a backup
-
 
   def after_sign_in_path_for(resource)
     if resource.is_a?(User)
@@ -42,8 +27,8 @@ class ApplicationController < ActionController::Base
 
 
  def configure_permitted_parameters
-   devise_parameter_sanitizer.permit(:sign_up, keys: [:last_name, :first_name, :avatar, :avatar_cache, :remove_avatar, :new_comments])
-   devise_parameter_sanitizer.permit(:account_update, keys: [:last_name, :first_name, :email, :password, :password_confirmation, :current_password, :avatar, :avatar_cache, :remove_avatar, :new_comments])
+   devise_parameter_sanitizer.permit(:sign_up, keys: [:last_name, :first_name, :home_views, :avatar, :avatar_cache, :remove_avatar, :new_comments])
+   devise_parameter_sanitizer.permit(:account_update, keys: [:last_name, :first_name, :home_views, :email, :password, :password_confirmation, :current_password, :avatar, :avatar_cache, :remove_avatar, :new_comments])
  end
 
 end

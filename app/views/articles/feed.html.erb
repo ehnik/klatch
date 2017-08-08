@@ -1,6 +1,17 @@
 <br>
 <h2 class="feed-header">Your Feed</h2>
 
+<% puts "feed stats" %>
+<% puts current_user.sign_in_count %>
+<% puts current_user.home_views %>
+
+
+<%if current_user.sign_in_count==1 && current_user.home_views==nil%>
+   <% puts "rendered" %>
+   <% current_user.update(home_views: 1) %>
+   <%= render "welcome" %>
+<%end%>
+
   <% if @user.friends.length > 0 %>
 
       <% @articles.each do |article| %>

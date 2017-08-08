@@ -10,7 +10,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def create
-    puts params[:user]
     if User.where(email: params[:user][:email]).length>0
       flash[:alert] = "This email has already been registered."
       redirect_back fallback_location: new_user_session_path
@@ -76,9 +75,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   devise_parameter_sanitizer.permit(:account_update, keys: [:attribute])
   # end
 
-  # def after_sign_up_path_for(resource)
+  #def after_sign_up_path_for(resource)
   #   super(resource)
-  #   redirect_to: articles_feed_path
   # end
 
   # The path used after sign up for inactive accounts.

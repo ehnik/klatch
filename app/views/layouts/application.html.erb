@@ -50,9 +50,7 @@
 
 <% end %>
     <% if current_user %>
-    <% puts current_user.sign_in_count %>
-    <% puts session[:home_views] %>
-       <%if current_user.sign_in_count==1 && session[:home_views]==15%>
+       <%if current_user.sign_in_count==1 && current_user.home_views==0%>
           <% puts "rendered" %>
           <%= render "articles/welcome" %>
        <%else%>
