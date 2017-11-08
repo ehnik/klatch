@@ -27,6 +27,9 @@ ActiveRecord::Schema.define(version: 20170808191355) do
     t.index ["user_id"], name: "index_articles_on_user_id", using: :btree
   end
 
+  create_table "boards", force: :cascade do |t|
+  end
+
   create_table "comments", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "article_id"
@@ -54,6 +57,20 @@ ActiveRecord::Schema.define(version: 20170808191355) do
     t.string  "message"
     t.index ["requestee_id"], name: "index_requests_on_requestee_id", using: :btree
     t.index ["requester_id"], name: "index_requests_on_requester_id", using: :btree
+  end
+
+  create_table "rows", force: :cascade do |t|
+    t.integer "column_a"
+    t.integer "column_b"
+    t.integer "column_c"
+    t.integer "column_d"
+    t.integer "column_e"
+    t.integer "column_f"
+    t.integer "column_g"
+    t.integer "column_h"
+    t.integer "column_i"
+    t.integer "column_j"
+    t.string  "board_id"
   end
 
   create_table "users", force: :cascade do |t|

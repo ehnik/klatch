@@ -14,15 +14,9 @@ $( ".show-more-button" ).click(function(evt) {
 
   if ($(evt.currentTarget).hasClass("new")){
       $(evt.currentTarget).html("Show discussion with " + target.dataset.name)
-      console.log("total comments")
-      console.log(totalCommentCount)
-      console.log("article comments")
-      console.log(threadCommentCount)
     if (totalCommentCount-threadCommentCount>0){
       $("#discussion-nav").html("Discussions (" + (totalCommentCount-threadCommentCount) +")")
       totalCommentCount = (totalCommentCount-threadCommentCount)
-      console.log("new total comments")
-      console.log(totalCommentCount)
       $('#discussion-nav').attr('data-comments',totalCommentCount)
     }
     else {
